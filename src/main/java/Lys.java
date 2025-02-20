@@ -145,6 +145,11 @@ public class Lys {
                             throw new IllegalArgumentException("The description of a todo cannot be empty.");
                         }
                         tasks[taskCount++] = new ToDo(words[1]);
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + tasks[taskCount - 1]);
+                        System.out.println("Now you have " + taskCount + " tasks in the list.");
+                        System.out.println("____________________________________________________________");
                         break;
 
                     case "deadline":
@@ -153,6 +158,11 @@ public class Lys {
                         }
                         String[] deadlineParts = words[1].split(" /by ", 2);
                         tasks[taskCount++] = new Deadline(deadlineParts[0], deadlineParts[1]);
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + tasks[taskCount - 1]);
+                        System.out.println("Now you have " + taskCount + " tasks in the list.");
+                        System.out.println("____________________________________________________________");
                         break;
 
                     case "event":
@@ -160,20 +170,36 @@ public class Lys {
                             throw new IllegalArgumentException("Event must be in format: event [task] /from [start] /to [end].");
                         }
                         String[] eventParts = words[1].split(" /from | /to ");
-                        if (eventParts.length < 3) {
-                            throw new IllegalArgumentException("Invalid event format.");
-                        }
                         tasks[taskCount++] = new Event(eventParts[0], eventParts[1], eventParts[2]);
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Got it. I've added this task:");
+                        System.out.println("  " + tasks[taskCount - 1]);
+                        System.out.println("Now you have " + taskCount + " tasks in the list.");
+                        System.out.println("____________________________________________________________");
+                        break;
+
+                    case "delete":
+                        int deleteIndex = Integer.parseInt(words[1]) - 1;
+                        if (deleteIndex < 0 || deleteIndex >= taskCount) {
+                            throw new IndexOutOfBoundsException("Invalid task number.");
+                        }
+                        Task removedTask = tasks[deleteIndex];
+
+                        for (int i = deleteIndex; i < taskCount - 1; i++) {
+                            tasks[i] = tasks[i + 1];
+                        }
+                        tasks[--taskCount] = null;
+
+                        System.out.println("____________________________________________________________");
+                        System.out.println("Noted. I've removed this task:");
+                        System.out.println("  " + removedTask);
+                        System.out.println("Now you have " + taskCount + " tasks in the list.");
+                        System.out.println("____________________________________________________________");
                         break;
 
                     default:
                         throw new IllegalArgumentException("Sorry, I don't understand that command.");
                 }
-                System.out.println("____________________________________________________________");
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  " + tasks[taskCount - 1]);
-                System.out.println("Now you have " + taskCount + " tasks in the list.");
-                System.out.println("____________________________________________________________");
             } catch (NumberFormatException e) {
                 System.out.println("____________________________________________________________");
                 System.out.println("Please enter a valid task number.");

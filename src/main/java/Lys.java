@@ -44,6 +44,10 @@ class Deadline extends Task {
         this.by = by;
     }
 
+    public String getBy() {
+        return by;
+    }
+
     @Override
     public String getTaskType() {
         return "D";
@@ -63,6 +67,14 @@ class Event extends Task {
         super(description);
         this.from = from;
         this.to = to;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
     }
 
     @Override
@@ -86,7 +98,7 @@ public class Lys {
         System.out.println("Hello from\n" + logo);
 
         System.out.println("____________________________________________________________");
-        System.out.println("Hello! I'm [YOUR CHATBOT NAME]");
+        System.out.println("Hello! I'm Cleite");
         System.out.println("What can I do for you?");
         System.out.println("____________________________________________________________");
 
@@ -138,6 +150,7 @@ public class Lys {
                         }
                         System.out.println("  " + tasks[index]);
                         System.out.println("____________________________________________________________");
+                        FileHandler.saveTasks(tasks, taskCount);
                         break;
 
                     case "todo":
@@ -150,6 +163,7 @@ public class Lys {
                         System.out.println("  " + tasks[taskCount - 1]);
                         System.out.println("Now you have " + taskCount + " tasks in the list.");
                         System.out.println("____________________________________________________________");
+                        FileHandler.saveTasks(tasks, taskCount);
                         break;
 
                     case "deadline":
@@ -163,6 +177,7 @@ public class Lys {
                         System.out.println("  " + tasks[taskCount - 1]);
                         System.out.println("Now you have " + taskCount + " tasks in the list.");
                         System.out.println("____________________________________________________________");
+                        FileHandler.saveTasks(tasks, taskCount);
                         break;
 
                     case "event":
@@ -176,6 +191,7 @@ public class Lys {
                         System.out.println("  " + tasks[taskCount - 1]);
                         System.out.println("Now you have " + taskCount + " tasks in the list.");
                         System.out.println("____________________________________________________________");
+                        FileHandler.saveTasks(tasks, taskCount);
                         break;
 
                     case "delete":
@@ -195,6 +211,7 @@ public class Lys {
                         System.out.println("  " + removedTask);
                         System.out.println("Now you have " + taskCount + " tasks in the list.");
                         System.out.println("____________________________________________________________");
+                        FileHandler.saveTasks(tasks, taskCount);
                         break;
 
                     default:

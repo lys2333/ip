@@ -1,23 +1,43 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Represents a task with a description and completion status.
+ * This is an abstract class and should be extended by specific task types.
+ */
 abstract class Task {
     protected String description;
     protected boolean isDone;
 
+    /**
+     * Constructs a new Task with a description.
+     *
+     * @param description The task description.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
     }
 
+    /**
+     * Marks this task as completed.
+     */
     public void markAsDone() {
         this.isDone = true;
     }
 
+    /**
+     * Marks this task as not completed.
+     */
     public void unmarkAsDone() {
         this.isDone = false;
     }
 
+    /**
+     * Gets the type of the task as a string.
+     *
+     * @return Task type identifier.
+     */
     public abstract String getTaskType();
 
     @Override
@@ -26,6 +46,9 @@ abstract class Task {
     }
 }
 
+/**
+ * Represents a basic ToDo task.
+ */
 class ToDo extends Task {
     public ToDo(String description) {
         super(description);
@@ -37,9 +60,18 @@ class ToDo extends Task {
     }
 }
 
+/**
+ * Represents a task with a deadline.
+ */
 class Deadline extends Task {
     private String by;
 
+    /**
+     * Constructs a Deadline task.
+     *
+     * @param description The task description.
+     * @param by The due date/time of the task.
+     */
     public Deadline(String description, String by) {
         super(description);
         this.by = by;
@@ -56,10 +88,20 @@ class Deadline extends Task {
     }
 }
 
+/**
+ * Represents an event task with a start and end time.
+ */
 class Event extends Task {
     private String from;
     private String to;
 
+    /**
+     * Constructs an Event task.
+     *
+     * @param description The task description.
+     * @param from The starting time.
+     * @param to The ending time.
+     */
     public Event(String description, String from, String to) {
         super(description);
         this.from = from;
@@ -77,6 +119,9 @@ class Event extends Task {
     }
 }
 
+/**
+ * Handles user interface interactions.
+ */
 class Ui {
     private Scanner scanner;
 
@@ -84,14 +129,27 @@ class Ui {
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * Reads a command from the user.
+     *
+     * @return The user input command.
+     */
     public String readCommand() {
         return scanner.nextLine().trim();
     }
 
+    /**
+     * Displays a line separator.
+     */
     public void showLine() {
         System.out.println("____________________________________________________________");
     }
 
+    /**
+     * Displays a message within formatted lines.
+     *
+     * @param message The message to be displayed.
+     */
     public void showMessage(String message) {
         showLine();
         System.out.println(message);
@@ -99,6 +157,9 @@ class Ui {
     }
 }
 
+/**
+ * Handles loading and saving tasks to a file.
+ */
 class Storage {
     private String filePath;
 
@@ -106,6 +167,11 @@ class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the storage file.
+     *
+     * @return A list of task descriptions.
+     */
     public List<String> load() {
         List<String> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -145,12 +211,24 @@ class Storage {
     }
 }
 
+/**
+ * Parses user input commands.
+ */
 class Parser {
+    /**
+     * Splits input command into command word and arguments.
+     *
+     * @param input The full command string.
+     * @return An array containing the command and arguments.
+     */
     public static String[] parse(String input) {
         return input.split(" ", 2);
     }
 }
 
+/**
+ * Manages a list of tasks.
+ */
 class TaskList {
     private List<Task> tasks;
 
@@ -158,10 +236,21 @@ class TaskList {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Adds a task to the task list.
+     *
+     * @param task The task to be added.
+     */
     public void addTask(Task task) {
         tasks.add(task);
     }
 
+    /**
+     * Marks or unmarks a task as completed.
+     *
+     * @param index The index of the task in the list.
+     * @param isDone True to mark as done, false to unmark.
+     */
     public void markTask(int index, boolean isDone) {
         if (isDone) {
             tasks.get(index).markAsDone();
@@ -170,10 +259,18 @@ class TaskList {
         }
     }
 
+    /**
+     * Deletes a task from the list.
+     *
+     * @param index The index of the task to delete.
+     */
     public void deleteTask(int index) {
         tasks.remove(index);
     }
 
+    /**
+     * Displays all tasks in the list.
+     */
     public void listTasks() {
         if (tasks.isEmpty()) {
             System.out.println("Your task list is empty.");
@@ -185,6 +282,9 @@ class TaskList {
         }
     }
 
+    /**
+     * Find a task with relevant words in the list.
+     */
     public void findTasks(String keyword) {
         List<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
@@ -203,6 +303,11 @@ class TaskList {
         }
     }
 
+    /**
+     * Retrieves the number of tasks in the list.
+     *
+     * @return The size of the task list.
+     */
     public int getSize() {
         return tasks.size();
     }
@@ -212,6 +317,9 @@ class TaskList {
     }
 }
 
+/**
+ * Main class that runs the Lys chatbot.
+ */
 public class Lys {
     private Ui ui;
     private Storage storage;
@@ -236,6 +344,9 @@ public class Lys {
         }
     }
 
+    /**
+     * Runs the chatbot, handling user commands.
+     */
     public void run() {
         ui.showMessage("Hello! I'm Lys.\nWhat can I do for you?");
         boolean isRunning = true;
@@ -342,6 +453,11 @@ public class Lys {
         }
     }
 
+    /**
+     * Entry point of the program.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         new Lys().run();
     }

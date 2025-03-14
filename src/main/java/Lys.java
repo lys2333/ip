@@ -185,6 +185,24 @@ class TaskList {
         }
     }
 
+    public void findTasks(String keyword) {
+        List<Task> matchingTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.description.contains(keyword)) {
+                matchingTasks.add(task);
+            }
+        }
+
+        if (matchingTasks.isEmpty()) {
+            System.out.println("No matching tasks found.");
+        } else {
+            System.out.println("Here are the matching tasks in your list:");
+            for (int i = 0; i < matchingTasks.size(); i++) {
+                System.out.println((i + 1) + "." + matchingTasks.get(i));
+            }
+        }
+    }
+
     public int getSize() {
         return tasks.size();
     }
@@ -305,6 +323,16 @@ public class Lys {
                         storage.save(tasks.getTasks());
                         ui.showMessage("Noted. I've removed this task:\n  " + removedTask + "\nNow you have " + tasks.getSize() + " tasks in the list.");
                         break;
+
+                    case "find":
+                        if (parsedInput.length < 2) {
+                            throw new IllegalArgumentException("Please provide a keyword to search.");
+                        }
+                        ui.showLine();
+                        tasks.findTasks(parsedInput[1]);
+                        ui.showLine();
+                        break;
+
                     default:
                         throw new IllegalArgumentException("Unknown command.");
                 }
